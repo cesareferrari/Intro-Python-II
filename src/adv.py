@@ -22,12 +22,6 @@ earlier adventurers. The only exit is to the south."""),
 }
 
 
-for key in rooms:
-    print(f"""Location: {key},
-            Name: {rooms[key].name},
-            Description: {rooms[key].description}""")
-
-
 # Link rooms together
 
 rooms['outside'].n_to = rooms['foyer']
