@@ -1,6 +1,8 @@
 from room import Room
 from player import Player
 
+directions = ("n", "s", "e", "w")
+
 # Declare all the rooms
 
 rooms = {
@@ -45,17 +47,34 @@ player = Player("My Player", rooms['outside'])
 selection = None
 
 # Write a loop that:
-#
-# * Prints the current room name
-# * Prints the current description (the textwrap module might be useful here).
-# * Waits for user input and decides what to do.
 
+# If the user enters "q", quit the game.
 while selection != 'q':
-    selection = input("Enter a selection. [q] to quit.")
+    # * Prints the current room name
+    print("Current room:", player.current_room.name)
+
+    # * Prints the current description
+    # (the textwrap module might be useful here).
+    print(player.current_room.description)
+
+    # * Waits for user input and decides what to do.
+    selection = input("Enter [n, s, e, w] to play or [q] to quit: ")
     print("Your selection was: ", selection)
 
+    # If the user enters a cardinal direction, attempt to move to the room there.
+    # Print an error message if the movement isn't allowed.
+    if selection in directions:
+        if selection == "n":
+            player.current_room = player.current_room.n_to
+        if selection == "s":
+            player.current_room = player.current_room.s_to
+        if selection == "e":
+            player.current_room = player.current_room.e_to
+        if selection == "w":
+            player.current_room = player.current_room.w_to
+    elif selection == 'q':
+        print("Quitting the game. Thanks for playing.")
+    else:
+        print("Must enter: [n, s, e, w]")
 
-# If the user enters a cardinal direction, attempt to move to the room there.
-# Print an error message if the movement isn't allowed.
-#
-# If the user enters "q", quit the game.
+
