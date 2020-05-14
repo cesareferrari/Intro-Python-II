@@ -11,5 +11,5 @@ class Room:
         self.w_to = None
 
     def __str__(self):
-        return f"Room | name: {self.name}, description: {self.description}, n_to: {self.n_to}"
+        return f"Room | name: {self.name}, description: {self.description}, n_to: {self.n_to}, s_to: {self.s_to}, e_to: {self.e_to}, w_to: {self.w_to}"
 

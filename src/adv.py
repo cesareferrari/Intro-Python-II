@@ -93,4 +93,17 @@ except AttribueError:
 
 hasattr(thing, attribute) ???
 
+
+# this works, returns true or false depending if there 
+# is a next room to go to.:
+
+def next_room(room, direction):
+    if getattr(room, direction):
+            return True
+    else:
+            return False
+
+next_room(outside, 'n_to')
+
+
 """
