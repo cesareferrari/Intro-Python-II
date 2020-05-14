@@ -47,6 +47,7 @@ player = Player("My Player", rooms['outside'])
 selection = None
 
 # Write a loop that:
+# while True
 
 # If the user enters "q", quit the game.
 while selection != 'q':
@@ -78,3 +79,18 @@ while selection != 'q':
         print("Must enter: [n, s, e, w]")
 
 
+
+"""
+directions = {'n': 'n_to', 's': 's_to', ...}
+direction = directions[choice]
+
+try:
+    player.current_room = getattr(player.current_room, direction)
+
+except AttribueError:
+    print("You can't go that way")
+
+
+hasattr(thing, attribute) ???
+
+"""
