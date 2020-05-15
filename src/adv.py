@@ -1,9 +1,13 @@
+import random
 import textwrap
 from room import Room
 from player import Player
 
 directions = {"n": "n_to", "s": "s_to", "e": "e_to", "w": "w_to"}
 allowed_directions = list(directions.keys())
+
+# Text formatting and messages
+# TODO: put into a module
 
 wrapper = textwrap.TextWrapper(width=50) 
 
@@ -16,8 +20,16 @@ def print_cyan(skk):
 def print_red(skk):
     print("\033[91m{}\033[00m".format(skk)) 
 
+selection_messages = [
+        'You selected',
+        'Mmmm... I see you chose',
+        'Really? Did you choose',
+        'Oh, my! You picked',
+        'I don\'t know why you selected',
+        ]
 
-def enter_room(player, movement):
+
+def try_enter_room(player, movement):
     if getattr(player.current_room, movement) is None:
         print_red("\nNope! Can't go there!")
     else:
@@ -25,7 +37,6 @@ def enter_room(player, movement):
 
 
 # Declare all the rooms
-
 rooms = {
     'outside':  Room("Outside Cave Entrance",
                      "North of you, the cave mount beckons"),
@@ -47,7 +58,6 @@ earlier adventurers. The only exit is to the south."""),
 
 
 # Link rooms together
-
 rooms['outside'].n_to = rooms['foyer']
 rooms['foyer'].s_to = rooms['outside']
 rooms['foyer'].n_to = rooms['overlook']
@@ -57,35 +67,29 @@ rooms['narrow'].w_to = rooms['foyer']
 rooms['narrow'].n_to = rooms['treasure']
 rooms['treasure'].s_to = rooms['narrow']
 
-#
+
 # Main
-#
 
 # Make a new player object that is currently in the 'outside' room.
 player = Player("Curly", rooms['outside'])
 
+# Initial selection is None
 selection = None
 
-# Write a loop that:
-# while True
-
-# If the user enters "q", quit the game.
+# Loop: If the user enters "q", quit the game.
 while selection != 'q':
-    # * Prints the current room name
+    # Print the current room name and description
     print_yellow(wrapper.fill(f"{player.name} is in '{player.current_room.name}'"))
-
-    # * Prints the current description
-    # (the textwrap module might be useful here).
     print_cyan(wrapper.fill(player.current_room.description))
 
-    # * Waits for user input and decides what to do.
+    # Wait for user input and decide what to do.
     selection = input(f"Enter {allowed_directions} to play or ['q'] to quit: ")
-    print("\nGood, your selection was:", selection.upper())
+    print(f"\n{random.choice(selection_messages)}", selection.upper())
 
     # If the user enters a cardinal direction, attempt to move to the room there.
     # Print an error message if the movement isn't allowed.
     if selection in directions.keys():
-        enter_room(player, directions[selection])
+        try_enter_room(player, directions[selection])
     elif selection == 'q':
         print("\nQuitting the game already? Thanks for playing.")
     else:
