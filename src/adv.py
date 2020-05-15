@@ -17,6 +17,13 @@ def print_red(skk):
     print("\033[91m{}\033[00m".format(skk)) 
 
 
+def enter_room(player, movement):
+    if getattr(player.current_room, movement) is None:
+        print_red("\nNope! Can't go there!")
+    else:
+        setattr(player, "current_room", getattr(player.current_room, movement))
+
+
 # Declare all the rooms
 
 rooms = {
@@ -55,8 +62,7 @@ rooms['treasure'].s_to = rooms['narrow']
 #
 
 # Make a new player object that is currently in the 'outside' room.
-
-player = Player("My Player", rooms['outside'])
+player = Player("Curly", rooms['outside'])
 
 selection = None
 
@@ -66,7 +72,7 @@ selection = None
 # If the user enters "q", quit the game.
 while selection != 'q':
     # * Prints the current room name
-    print_yellow(wrapper.fill(f"{player.name} is in room '{player.current_room.name}'"))
+    print_yellow(wrapper.fill(f"{player.name} is in '{player.current_room.name}'"))
 
     # * Prints the current description
     # (the textwrap module might be useful here).
@@ -74,21 +80,15 @@ while selection != 'q':
 
     # * Waits for user input and decides what to do.
     selection = input(f"Enter {allowed_directions} to play or ['q'] to quit: ")
-    print("\nYour selection was: ", selection)
+    print("\nGood, your selection was:", selection.upper())
 
     # If the user enters a cardinal direction, attempt to move to the room there.
     # Print an error message if the movement isn't allowed.
     if selection in directions.keys():
-        move_to = directions[selection]
-
-        if getattr(player.current_room, move_to) is None:
-            print_red("\nNo go")
-        else:
-            setattr(player, "current_room", getattr(player.current_room, move_to))
-
+        enter_room(player, directions[selection])
     elif selection == 'q':
-        print("\nQuitting the game. Thanks for playing.")
-
+        print("\nQuitting the game already? Thanks for playing.")
     else:
-        print_red(f"\nYou must enter: {allowed_directions}")
+        print_red(f"\nWrong key! You should enter: {allowed_directions}")
+
 
