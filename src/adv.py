@@ -79,29 +79,12 @@ while selection != 'q':
     # If the user enters a cardinal direction, attempt to move to the room there.
     # Print an error message if the movement isn't allowed.
     if selection in directions.keys():
-        if selection == "n":
-            if player.current_room.n_to is None:
-                print_red("\nNo go")
-            else:
-                player.current_room = player.current_room.n_to
+        move_to = directions[selection]
 
-        if selection == "s":
-            if player.current_room.s_to is None:
-                print_red("\nNo go")
-            else:
-                player.current_room = player.current_room.s_to
-
-        if selection == "e":
-            if player.current_room.e_to is None:
-                print_red("\nNo go")
-            else:
-                player.current_room = player.current_room.e_to
-
-        if selection == "w":
-            if player.current_room.w_to is None:
-                print_red("\nNo go")
-            else:
-                player.current_room = player.current_room.w_to
+        if getattr(player.current_room, move_to) is None:
+            print_red("\nNo go")
+        else:
+            setattr(player, "current_room", getattr(player.current_room, move_to))
 
     elif selection == 'q':
         print("\nQuitting the game. Thanks for playing.")
@@ -109,32 +92,3 @@ while selection != 'q':
     else:
         print_red(f"\nYou must enter: {allowed_directions}")
 
-
-
-"""
-directions = {'n': 'n_to', 's': 's_to', ...}
-direction = directions[choice]
-
-try:
-    player.current_room = getattr(player.current_room, direction)
-
-except AttribueError:
-    print("You can't go that way")
-
-
-hasattr(thing, attribute) ???
-
-
-# this works, returns true or false depending if there 
-# is a next room to go to.:
-
-def next_room(room, direction):
-    if getattr(room, direction):
-            return True
-    else:
-            return False
-
-next_room(outside, 'n_to')
-
-
-"""
