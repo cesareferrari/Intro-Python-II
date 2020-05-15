@@ -1,7 +1,21 @@
+import textwrap
 from room import Room
 from player import Player
 
-directions = ("n", "s", "e", "w")
+directions = {"n": "n_to", "s": "s_to", "e": "e_to", "w": "w_to"}
+allowed_directions = list(directions.keys())
+
+wrapper = textwrap.TextWrapper(width=50) 
+
+def print_yellow(skk):
+    print("\033[93m{}\033[00m".format(skk))
+
+def print_cyan(skk):
+    print("\033[96m{}\033[00m".format(skk)) 
+
+def print_red(skk):
+    print("\033[91m{}\033[00m".format(skk)) 
+
 
 # Declare all the rooms
 
@@ -52,31 +66,48 @@ selection = None
 # If the user enters "q", quit the game.
 while selection != 'q':
     # * Prints the current room name
-    print("Current room:", player.current_room.name)
+    print_yellow(wrapper.fill(f"{player.name} is in room '{player.current_room.name}'"))
 
     # * Prints the current description
     # (the textwrap module might be useful here).
-    print(player.current_room.description)
+    print_cyan(wrapper.fill(player.current_room.description))
 
     # * Waits for user input and decides what to do.
-    selection = input("Enter [n, s, e, w] to play or [q] to quit: ")
-    print("Your selection was: ", selection)
+    selection = input(f"Enter {allowed_directions} to play or ['q'] to quit: ")
+    print("\nYour selection was: ", selection)
 
     # If the user enters a cardinal direction, attempt to move to the room there.
     # Print an error message if the movement isn't allowed.
-    if selection in directions:
+    if selection in directions.keys():
         if selection == "n":
-            player.current_room = player.current_room.n_to
+            if player.current_room.n_to is None:
+                print_red("\nNo go")
+            else:
+                player.current_room = player.current_room.n_to
+
         if selection == "s":
-            player.current_room = player.current_room.s_to
+            if player.current_room.s_to is None:
+                print_red("\nNo go")
+            else:
+                player.current_room = player.current_room.s_to
+
         if selection == "e":
-            player.current_room = player.current_room.e_to
+            if player.current_room.e_to is None:
+                print_red("\nNo go")
+            else:
+                player.current_room = player.current_room.e_to
+
         if selection == "w":
-            player.current_room = player.current_room.w_to
+            if player.current_room.w_to is None:
+                print_red("\nNo go")
+            else:
+                player.current_room = player.current_room.w_to
+
     elif selection == 'q':
-        print("Quitting the game. Thanks for playing.")
+        print("\nQuitting the game. Thanks for playing.")
+
     else:
-        print("Must enter: [n, s, e, w]")
+        print_red(f"\nYou must enter: {allowed_directions}")
 
 
 
